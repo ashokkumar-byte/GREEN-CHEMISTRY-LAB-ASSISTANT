@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Assistant - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html">Experiments</a>
+      <a href="principles.html">Principles</a>
+      <a href="safety.html">Safety</a>
+      <a href="ai-assistant.html">AI Assistant</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+      <div>
+        <h1 style="margin:0 0 6px">🤖 Green Chemistry AI Assistant</h1>
+        <p class="muted" style="margin:0">Ask educational questions about green chemistry principles, experiments, lab safety, waste management, and safer alternatives.</p>
+      </div>
+      <div class="chat-toolbar" style="margin-bottom:0">
+        <span id="aiStatus" class="badge">🌱 Real-Time Assistant</span>
+        <button id="clearChatBtn" type="button" class="btn secondary" style="padding:8px 14px;font-size:13px">🗑️ Clear Chat</button>
+      </div>
+    </div>
+
+    <!-- Quick Prompts Chips -->
+    <div class="quick-chips">
+      <button type="button" class="chip" data-prompt="Explain the 12 Principles of Green Chemistry with real-world examples">🌱 12 Principles</button>
+      <button type="button" class="chip" data-prompt="What is Atom Economy and how do we calculate it?">🔬 Atom Economy</button>
+      <button type="button" class="chip" data-prompt="Explain Experiment #1: Esterification with Safer Conditions">🧪 Esterification Lab</button>
+      <button type="button" class="chip" data-prompt="Explain Experiment #2: Solvent-Free Aldol Reaction">🧪 Solvent-Free Aldol</button>
+      <button type="button" class="chip" data-prompt="What are the essential laboratory safety rules and chemical spill protocols?">🛡️ Lab Safety & Spills</button>
+      <button type="button" class="chip" data-prompt="How should chemical waste be segregated and managed in a green lab?">♻️ Waste Management</button>
+      <button type="button" class="chip" data-prompt="What are safer alternatives to volatile hazardous organic solvents?">🔄 Safer Alternatives</button>
+    </div>
+
+    <!-- Main Chat Window -->
+    <div id="chat" class="chat-box"></div>
+
+    <!-- Message Input Form -->
+    <form id="chatForm" class="top-space">
+      <div class="chat-form-row">
+        <input id="question" class="input" placeholder="Ask about experiments, atom economy, safety rules, or green principles..." required autocomplete="off">
+        <button id="sendBtn" class="btn" type="submit" style="display:flex;align-items:center;gap:6px;min-width:105px;justify-content:center">
+          <span>Send</span>
+          <span>➤</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/assistant.js"></script>
+</body>
+</html>

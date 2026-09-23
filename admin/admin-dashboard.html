@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard - Green Chemistry</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="admin-dashboard.html">🌱 Green Lab Admin Portal</a>
+    <nav class="navlinks">
+      <a href="manage-experiments.html">Experiments</a>
+      <a href="manage-quiz.html">Quiz Pool</a>
+      <a href="manage-users.html">Users</a>
+      <a href="/" target="_blank">Student Site ↗</a>
+      <button class="btn secondary" onclick="adminLogout()" style="padding:7px 14px;font-size:13px">Logout</button>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h1 style="margin:0 0 6px">Admin Overview & Control Panel</h1>
+        <p class="muted" style="margin:0">Manage curriculum experiments, monitor registered students, and maintain the smart quiz question pool.</p>
+      </div>
+      <div>
+        <span class="badge teal" id="adminUserBadge">Admin: active</span>
+      </div>
+    </div>
+
+    <!-- Live Admin Statistics Cards -->
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:30px">
+      <div class="card">
+        <b style="font-size:30px;color:var(--green);display:block" id="statUsers">-</b>
+        <span class="muted" style="font-weight:600">Registered Users</span>
+      </div>
+      <div class="card">
+        <b style="font-size:30px;color:var(--teal);display:block" id="statExperiments">-</b>
+        <span class="muted" style="font-weight:600">Active Experiments</span>
+      </div>
+      <div class="card">
+        <b style="font-size:30px;color:var(--dark);display:block" id="statQuestions">-</b>
+        <span class="muted" style="font-weight:600">Quiz Questions</span>
+      </div>
+      <div class="card">
+        <b style="font-size:30px;color:var(--green);display:block" id="statPracticals">-</b>
+        <span class="muted" style="font-weight:600">Practicals Completed</span>
+      </div>
+      <div class="card">
+        <b style="font-size:30px;color:var(--teal);display:block" id="statReports">-</b>
+        <span class="muted" style="font-weight:600">Lab Records Generated</span>
+      </div>
+    </div>
+
+    <!-- Management Portals Navigation -->
+    <h2 style="font-size:20px;margin-bottom:16px">Management Modules</h2>
+    <div class="grid">
+      <a class="card" href="manage-experiments.html">
+        <div style="font-size:32px;margin-bottom:10px">🧪</div>
+        <h3 style="margin-bottom:6px">Manage Experiments</h3>
+        <p class="muted" style="margin-bottom:12px">Add, edit, and curate laboratory experiments, procedures, and virtual practical simulation steps.</p>
+        <span class="btn secondary" style="padding:6px 14px;font-size:13px">Open Experiments Manager →</span>
+      </a>
+
+      <a class="card" href="manage-quiz.html">
+        <div style="font-size:32px;margin-bottom:10px">📝</div>
+        <h3 style="margin-bottom:6px">Manage Smart Quiz Pool</h3>
+        <p class="muted" style="margin-bottom:12px">View and expand the reusable question pool across 5 green chemistry topics and 3 difficulty tiers.</p>
+        <span class="btn secondary" style="padding:6px 14px;font-size:13px">Open Quiz Manager →</span>
+      </a>
+
+      <a class="card" href="manage-users.html">
+        <div style="font-size:32px;margin-bottom:10px">👥</div>
+        <h3 style="margin-bottom:6px">Manage Users</h3>
+        <p class="muted" style="margin-bottom:12px">View registered students, review account creation dates, and manage institutional accounts.</p>
+        <span class="btn secondary" style="padding:6px 14px;font-size:13px">Open User Manager →</span>
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Administration Console</footer>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    async function initAdminDashboard() {
+      try {
+        const me = await api('/admin/me');
+        document.getElementById('adminUserBadge').textContent = `Admin: @${me.username}`;
+
+        const stats = await api('/admin/stats');
+        document.getElementById('statUsers').textContent = stats.users || 0;
+        document.getElementById('statExperiments').textContent = stats.experiments || 0;
+        document.getElementById('statQuestions').textContent = stats.questions || 0;
+        document.getElementById('statPracticals').textContent = stats.practicals || 0;
+        document.getElementById('statReports').textContent = stats.reports || 0;
+      } catch (err) {
+        location.href = 'admin-login.html';
+      }
+    }
+
+    async function adminLogout() {
+      await api('/admin/logout', { method: 'POST' });
+      location.href = 'admin-login.html';
+    }
+
+    initAdminDashboard();
+  </script>
+</body>
+</html>

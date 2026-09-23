@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Laboratory Record Report - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar no-print">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html">Experiments</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="history.html">History</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container" style="padding:25px 0">
+    <!-- Toolbar (Hidden during print) -->
+    <div class="no-print" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <a href="experiments.html" style="font-weight:700;color:var(--dark)">← Back to Experiments</a>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn" onclick="window.print()" style="background:var(--teal);display:flex;align-items:center;gap:6px">
+          <span>🖨️</span>
+          <span>Print / Save as PDF</span>
+        </button>
+        <a class="btn secondary" href="history.html">📜 View All Reports in History</a>
+        <a class="btn secondary" href="dashboard.html">📊 Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Structured College Laboratory Record Sheet -->
+    <div id="reportContainer">
+      <div class="report-sheet">
+        <p class="muted" style="text-align:center">Loading laboratory record...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer no-print">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

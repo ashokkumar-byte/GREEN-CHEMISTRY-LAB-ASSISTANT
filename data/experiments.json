@@ -1,0 +1,91 @@
+[
+  {
+    "id": 1,
+    "name": "Esterification with Safer Conditions",
+    "category": "Organic Chemistry",
+    "description": "Preparation of an ester while considering atom economy, solvent choice and waste reduction.",
+    "materials": [
+      "Carboxylic acid",
+      "Alcohol",
+      "Catalyst",
+      "Water bath"
+    ],
+    "procedure": [
+      "Measure reactants accurately.",
+      "Use the minimum practical catalyst.",
+      "Heat gently using a water bath.",
+      "Separate and purify the product with minimal solvent."
+    ],
+    "green_points": [
+      "Reduce excess reactants",
+      "Prefer safer heating",
+      "Minimize solvent waste"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Solvent-Free Aldol Reaction",
+    "category": "Organic Chemistry",
+    "description": "A model reaction demonstrating reduced solvent use and efficient synthesis.",
+    "materials": [
+      "Aldehyde",
+      "Ketone",
+      "Mild base"
+    ],
+    "procedure": [
+      "Mix reactants in suitable proportions.",
+      "Add a mild base carefully.",
+      "Stir under controlled conditions.",
+      "Isolate the solid product and recycle where possible."
+    ],
+    "green_points": [
+      "Solvent reduction",
+      "High atom economy",
+      "Lower waste"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Natural Acid-Base Indicator",
+    "category": "Analytical Chemistry",
+    "description": "Use plant pigments as a safer alternative to some synthetic indicators for simple demonstrations.",
+    "materials": [
+      "Red cabbage extract",
+      "Water",
+      "Dilute acids/bases"
+    ],
+    "procedure": [
+      "Prepare filtered plant extract.",
+      "Place small samples in labeled containers.",
+      "Add tiny amounts of test solutions.",
+      "Record the color changes."
+    ],
+    "green_points": [
+      "Renewable source",
+      "Low toxicity",
+      "Small-scale experiment"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Microscale Reaction Study",
+    "category": "Green Lab Practice",
+    "description": "Perform chemistry at microscale to reduce material use and waste generation.",
+    "materials": [
+      "Microscale glassware",
+      "Small reagent quantities",
+      "PPE"
+    ],
+    "procedure": [
+      "Plan the smallest useful scale.",
+      "Measure micro-quantities carefully.",
+      "Observe reaction safely.",
+      "Collect and segregate waste correctly."
+    ],
+    "green_points": [
+      "Less waste",
+      "Lower exposure",
+      "Lower resource consumption"
+    ]
+  }
+]

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Experiments & Virtual Practicals - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html" style="color:var(--green);font-weight:700">Experiments</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="principles.html">Principles</a>
+      <a href="safety.html">Safety</a>
+      <a href="ai-assistant.html">AI Assistant</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <h1 style="margin:0 0 6px">🧪 Green Chemistry Experiments</h1>
+        <p class="muted" style="margin:0">Explore sustainable synthesis procedures, virtual practical simulations, and green metric evaluations.</p>
+      </div>
+      <div>
+        <a class="btn secondary" href="history.html" style="padding:9px 16px;font-size:13px">📜 Past Practicals & Reports</a>
+      </div>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="filter-bar">
+      <div>
+        <input id="searchInput" class="input" placeholder="🔍 Search experiments, reagents, or principles..." autocomplete="off">
+      </div>
+      <div>
+        <select id="categoryFilter" class="select">
+          <option value="all">All Categories</option>
+          <option value="Organic Chemistry">Organic Chemistry</option>
+          <option value="Analytical Chemistry">Analytical Chemistry</option>
+          <option value="Green Lab Practice">Green Lab Practice</option>
+        </select>
+      </div>
+      <div>
+        <select id="difficultyFilter" class="select">
+          <option value="all">All Difficulties</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+      <div>
+        <select id="principleFilter" class="select">
+          <option value="all">All Principles</option>
+          <option value="Atom Economy">Atom Economy</option>
+          <option value="Prevention">Prevention</option>
+          <option value="Safer Solvents">Safer Solvents</option>
+          <option value="Energy Efficiency">Energy Efficiency</option>
+          <option value="Catalysis">Catalysis</option>
+          <option value="Renewable Feedstocks">Renewable Feedstocks</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Experiments Grid -->
+    <div id="experiments" class="grid">
+      <p class="muted">Loading experiments...</p>
+    </div>
+  </div>
+
+  <!-- Floating AI Assistant Launcher -->
+  <a href="ai-assistant.html" class="floating-ai-btn" title="Ask AI Assistant">
+    <span>🤖</span>
+    <span>Ask AI Assistant</span>
+  </a>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/experiments.js"></script>
+</body>
+</html>

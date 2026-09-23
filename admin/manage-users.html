@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Manage Users - Admin Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="admin-dashboard.html">🌱 Green Lab Admin Portal</a>
+    <nav class="navlinks">
+      <a href="admin-dashboard.html">Overview</a>
+      <a href="manage-experiments.html">Experiments</a>
+      <a href="manage-quiz.html">Quiz Pool</a>
+      <a href="manage-users.html" style="color:var(--green);font-weight:700">Users</a>
+      <a href="/" target="_blank">Student Site ↗</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <a href="admin-dashboard.html" style="font-size:13px;color:var(--muted)">← Back to Admin Dashboard</a>
+        <h1 style="margin:6px 0 2px">👥 Registered User Accounts</h1>
+        <p class="muted" style="margin:0">Review student registrations, credentials, and institutional accounts.</p>
+      </div>
+    </div>
+
+    <!-- Users Table Card -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="usersTableBox" style="overflow-x:auto">
+        <p class="muted" style="padding:30px;text-align:center">Loading registered users...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Administration Console</footer>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    async function loadAdminUsers() {
+      try {
+        await api('/admin/me');
+      } catch (err) {
+        location.href = 'admin-login.html';
+        return;
+      }
+
+      const box = document.getElementById('usersTableBox');
+      try {
+        const res = await api('/admin/users');
+        const users = res.users || [];
+
+        box.innerHTML = `
+          <table style="width:100%;border-collapse:collapse;text-align:left;font-size:14px">
+            <thead>
+              <tr style="background:#f4fbf7;border-bottom:2px solid var(--border)">
+                <th style="padding:14px 18px">ID</th>
+                <th style="padding:14px 18px">Full Name</th>
+                <th style="padding:14px 18px">Username</th>
+                <th style="padding:14px 18px">Email Address</th>
+                <th style="padding:14px 18px">Role</th>
+                <th style="padding:14px 18px">Registered Date</th>
+                <th style="padding:14px 18px;text-align:right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${users.map(u => `
+                <tr style="border-bottom:1px solid #eef5f1">
+                  <td style="padding:14px 18px;font-weight:700">#${u.id}</td>
+                  <td style="padding:14px 18px"><b>${u.name}</b></td>
+                  <td style="padding:14px 18px"><code>@${u.username}</code></td>
+                  <td style="padding:14px 18px">${u.email}</td>
+                  <td style="padding:14px 18px">
+                    <span class="badge ${u.is_admin ? 'teal' : ''}">${u.is_admin ? 'Administrator' : 'Student'}</span>
+                  </td>
+                  <td style="padding:14px 18px;font-size:13px;color:var(--muted)">${u.created_at}</td>
+                  <td style="padding:14px 18px;text-align:right">
+                    ${!u.is_admin ? `
+                      <button class="btn danger" style="padding:6px 12px;font-size:12px" onclick="deleteUser(${u.id}, '${u.username}')">Delete</button>
+                    ` : '<span class="muted" style="font-size:12px">Protected</span>'}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        box.innerHTML = `<p class="error" style="padding:20px">${err.message}</p>`;
+      }
+    }
+
+    window.deleteUser = async function(uid, uname) {
+      if (!confirm(`Are you sure you want to delete user @${uname}? This action cannot be undone.`)) return;
+      try {
+        await api('/admin/users/' + uid, { method: 'DELETE' });
+        loadAdminUsers();
+      } catch (err) {
+        alert(err.message || 'Error deleting user');
+      }
+    };
+
+    loadAdminUsers();
+  </script>
+</body>
+</html>

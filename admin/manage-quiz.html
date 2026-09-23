@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Manage Quiz Pool - Admin Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="admin-dashboard.html">🌱 Green Lab Admin Portal</a>
+    <nav class="navlinks">
+      <a href="admin-dashboard.html">Overview</a>
+      <a href="manage-experiments.html">Experiments</a>
+      <a href="manage-quiz.html" style="color:var(--green);font-weight:700">Quiz Pool</a>
+      <a href="manage-users.html">Users</a>
+      <a href="/" target="_blank">Student Site ↗</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <a href="admin-dashboard.html" style="font-size:13px;color:var(--muted)">← Back to Admin Dashboard</a>
+        <h1 style="margin:6px 0 2px">📝 Manage Smart Quiz Question Pool</h1>
+        <p class="muted" style="margin:0">Maintain and expand reusable questions across topics and difficulty levels.</p>
+      </div>
+      <div>
+        <button type="button" class="btn" onclick="toggleAddQuizForm()">+ Add New Question</button>
+      </div>
+    </div>
+
+    <!-- Add Question Form -->
+    <div id="addQuizCard" class="card" style="display:none;margin-bottom:24px;border:2px solid var(--teal)">
+      <h3 style="margin-top:0">Add New Question to Quiz Pool</h3>
+      <form id="createQuizForm">
+        <label style="font-weight:700;font-size:13px">Question Prompt</label>
+        <textarea id="qText" class="textarea" rows="2" placeholder="e.g. Which principle focuses on atom economy?" required></textarea>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-weight:700;font-size:13px">Topic</label>
+            <select id="qTopic" class="select">
+              <option value="12 Principles">12 Principles</option>
+              <option value="Atom Economy">Atom Economy</option>
+              <option value="Safety & Emergencies">Safety & Emergencies</option>
+              <option value="Waste Management">Waste Management</option>
+              <option value="Solvents & Catalysis">Solvents & Catalysis</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:13px">Difficulty</label>
+            <select id="qDifficulty" class="select">
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0">
+          <div>
+            <label style="font-weight:700;font-size:13px">Option A</label>
+            <input id="qOptA" class="input" placeholder="Option A text" required>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:13px">Option B</label>
+            <input id="qOptB" class="input" placeholder="Option B text" required>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:13px">Option C</label>
+            <input id="qOptC" class="input" placeholder="Option C text" required>
+          </div>
+          <div>
+            <label style="font-weight:700;font-size:13px">Option D</label>
+            <input id="qOptD" class="input" placeholder="Option D text" required>
+          </div>
+        </div>
+
+        <label style="font-weight:700;font-size:13px">Correct Answer (Must match the exact text of one of the options above)</label>
+        <input id="qCorrect" class="input" placeholder="Exact correct answer text" required>
+
+        <label style="font-weight:700;font-size:13px">Educational Explanation</label>
+        <textarea id="qExpl" class="textarea" rows="2" placeholder="Explain why this answer is correct..."></textarea>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
+          <button type="button" class="btn secondary" onclick="toggleAddQuizForm()">Cancel</button>
+          <button type="submit" class="btn">Add Question</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Questions Table Card -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="quizTableBox" style="overflow-x:auto">
+        <p class="muted" style="padding:30px;text-align:center">Loading questions from pool...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Administration Console</footer>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    async function loadAdminQuiz() {
+      try {
+        await api('/admin/me');
+      } catch (err) {
+        location.href = 'admin-login.html';
+        return;
+      }
+
+      const box = document.getElementById('quizTableBox');
+      try {
+        const res = await api('/admin/quiz');
+        const qs = res.questions || [];
+
+        box.innerHTML = `
+          <table style="width:100%;border-collapse:collapse;text-align:left;font-size:14px">
+            <thead>
+              <tr style="background:#f4fbf7;border-bottom:2px solid var(--border)">
+                <th style="padding:14px 18px">ID</th>
+                <th style="padding:14px 18px">Question</th>
+                <th style="padding:14px 18px">Topic</th>
+                <th style="padding:14px 18px">Difficulty</th>
+                <th style="padding:14px 18px">Correct Answer</th>
+                <th style="padding:14px 18px;text-align:right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${qs.map(q => `
+                <tr style="border-bottom:1px solid #eef5f1">
+                  <td style="padding:14px 18px;font-weight:700">#${q.id}</td>
+                  <td style="padding:14px 18px;max-width:320px">
+                    <b>${q.question}</b>
+                  </td>
+                  <td style="padding:14px 18px"><span class="badge teal">${q.topic}</span></td>
+                  <td style="padding:14px 18px"><span class="badge ${q.difficulty === 'Easy' ? '' : q.difficulty === 'Hard' ? 'red' : 'amber'}">${q.difficulty}</span></td>
+                  <td style="padding:14px 18px;color:var(--green);font-weight:600">${q.correct_answer}</td>
+                  <td style="padding:14px 18px;text-align:right">
+                    <button class="btn danger" style="padding:6px 12px;font-size:12px" onclick="deleteQuizQuestion(${q.id})">Delete</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        box.innerHTML = `<p class="error" style="padding:20px">${err.message}</p>`;
+      }
+    }
+
+    window.toggleAddQuizForm = function() {
+      const card = document.getElementById('addQuizCard');
+      card.style.display = card.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.deleteQuizQuestion = async function(qid) {
+      if (!confirm('Are you sure you want to delete this question?')) return;
+      try {
+        await api('/admin/quiz/' + qid, { method: 'DELETE' });
+        loadAdminQuiz();
+      } catch (err) {
+        alert(err.message || 'Error deleting question');
+      }
+    };
+
+    document.getElementById('createQuizForm').onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await api('/admin/quiz', {
+          method: 'POST',
+          body: JSON.stringify({
+            question: document.getElementById('qText').value.trim(),
+            topic: document.getElementById('qTopic').value,
+            difficulty: document.getElementById('qDifficulty').value,
+            option_a: document.getElementById('qOptA').value.trim(),
+            option_b: document.getElementById('qOptB').value.trim(),
+            option_c: document.getElementById('qOptC').value.trim(),
+            option_d: document.getElementById('qOptD').value.trim(),
+            correct_answer: document.getElementById('qCorrect').value.trim(),
+            explanation: document.getElementById('qExpl').value.trim()
+          })
+        });
+        document.getElementById('createQuizForm').reset();
+        toggleAddQuizForm();
+        loadAdminQuiz();
+      } catch (err) {
+        alert(err.message || 'Error adding question');
+      }
+    };
+
+    loadAdminQuiz();
+  </script>
+</body>
+</html>

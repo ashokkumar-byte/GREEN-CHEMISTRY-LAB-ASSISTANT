@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Virtual Practical Lab - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html">Experiments</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="principles.html">Principles</a>
+      <a href="safety.html">Safety</a>
+      <a href="ai-assistant.html">AI Assistant</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <a href="experiments.html" style="font-weight:700;color:var(--dark);font-size:14px">← Back to Experiments</a>
+        <h1 style="margin:8px 0 4px" id="labExpTitle">🔬 Virtual Practical Lab</h1>
+        <p class="muted" style="margin:0" id="labExpSubtitle">Simulated laboratory experiment with real-time green chemistry metrics.</p>
+      </div>
+      <div>
+        <span class="badge" id="practicalStatusBadge">Status: Ready to Begin</span>
+      </div>
+    </div>
+
+    <!-- Stepper Navigation -->
+    <div class="lab-stepper" id="labStepper">
+      <div class="lab-step-pill active" id="pill-1">1. Pre-Lab & Safety</div>
+      <div class="lab-step-pill" id="pill-2">2. Step-by-Step Procedure</div>
+      <div class="lab-step-pill" id="pill-3">3. Record Observations</div>
+      <div class="lab-step-pill" id="pill-4">4. Results & Waste</div>
+      <div class="lab-step-pill" id="pill-5">5. Conclusion & Report</div>
+    </div>
+
+    <!-- Interactive Workspace Card -->
+    <div id="practicalWorkspace" class="card">
+      <div style="text-align:center;padding:40px">
+        <p class="muted">Initializing virtual laboratory apparatus...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating AI Assistant Launcher -->
+  <a href="ai-assistant.html" class="floating-ai-btn" title="Ask AI for Lab Help">
+    <span>🤖</span>
+    <span>Ask Lab Assistant</span>
+  </a>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/practical.js"></script>
+</body>
+</html>

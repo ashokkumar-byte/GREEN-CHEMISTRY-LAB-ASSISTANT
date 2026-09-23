@@ -1,0 +1,22 @@
+[
+  {
+    "hazard": "Volatile organic solvents",
+    "alternative": "Water or ethanol where compatible",
+    "benefit": "Can reduce hazardous solvent exposure in suitable procedures."
+  },
+  {
+    "hazard": "Stoichiometric metal reagents",
+    "alternative": "Catalytic methods",
+    "benefit": "Can reduce metal-containing waste."
+  },
+  {
+    "hazard": "Single-use materials",
+    "alternative": "Reusable equipment when safe",
+    "benefit": "Can reduce solid waste."
+  },
+  {
+    "hazard": "Large-scale reactions",
+    "alternative": "Microscale experiments",
+    "benefit": "Uses less material and can reduce waste and exposure."
+  }
+]

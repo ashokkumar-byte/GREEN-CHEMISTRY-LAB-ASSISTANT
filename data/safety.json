@@ -1,0 +1,17 @@
+{
+  "rules": [
+    "Wear appropriate PPE and closed footwear.",
+    "Read the experiment procedure before starting.",
+    "Never taste chemicals or work without supervision.",
+    "Label containers clearly.",
+    "Keep incompatible chemicals separated.",
+    "Use fume extraction when required by the procedure.",
+    "Dispose of chemical waste using your institution's approved process.",
+    "Report spills and unsafe conditions immediately."
+  ],
+  "emergency": [
+    "For a spill, stop work and inform the laboratory supervisor.",
+    "For eye or skin exposure, use the laboratory emergency washing facilities and seek responsible adult/institutional help immediately.",
+    "For fire or other emergency, follow the laboratory evacuation procedure."
+  ]
+}

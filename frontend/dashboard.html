@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="dash">
+    <aside class="sidebar">
+      <h2>🌱 Green Lab</h2>
+      <a href="dashboard.html" class="active">📊 Dashboard</a>
+      <a href="experiments.html">🧪 Experiments</a>
+      <a href="quiz.html">📝 Smart Quiz</a>
+      <a href="principles.html">📖 12 Principles</a>
+      <a href="safety.html">🛡️ Safety</a>
+      <a href="waste-management.html">♻️ Waste</a>
+      <a href="alternatives.html">🔄 Alternatives</a>
+      <a href="ai-assistant.html">🤖 AI Assistant</a>
+      <a href="history.html">📜 History</a>
+      <a href="profile.html">👤 Profile</a>
+      <a href="#" onclick="logout()">🚪 Logout</a>
+    </aside>
+
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+        <div>
+          <h1 style="margin:0 0 6px">Welcome, <span data-name>Student</span> 👋</h1>
+          <p class="muted" style="margin:0">Your real-time Green Chemistry learning & practical dashboard.</p>
+        </div>
+        <div>
+          <span class="badge" id="studentUsernameBadge">@user</span>
+        </div>
+      </div>
+
+      <!-- Real Statistics Grid -->
+      <div class="stats">
+        <div class="stat">
+          <b id="practicalsCount">0</b>
+          <span>Practicals Done</span>
+        </div>
+        <div class="stat">
+          <b id="reportCount">0</b>
+          <span>Reports Generated</span>
+        </div>
+        <div class="stat">
+          <b id="quizCount">0</b>
+          <span>Quiz Attempts</span>
+        </div>
+        <div class="stat">
+          <b id="avgQuizScore">0%</b>
+          <span>Avg Quiz Score</span>
+        </div>
+        <div class="stat">
+          <b id="experimentCount">4</b>
+          <span>Lab Experiments</span>
+        </div>
+      </div>
+
+      <!-- Learning Progress -->
+      <div class="progress-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0;font-size:16px">🌱 Green Chemistry Mastery Progress</h3>
+          <span style="font-weight:700;color:var(--green)" id="progressText">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <p class="muted" style="margin:0;font-size:13px">Progress advances as you complete virtual practicals, score on quizzes, and generate lab records.</p>
+      </div>
+
+      <!-- Quick Action Cards -->
+      <div class="quick">
+        <a class="card" href="experiments.html">
+          <h3>🧪 Virtual Practical Lab</h3>
+          <p class="muted">Perform step-by-step simulations, record observations, and generate reports.</p>
+          <span class="btn secondary" style="padding:7px 14px;font-size:13px;margin-top:8px">Launch Lab →</span>
+        </a>
+
+        <a class="card ai-assistant-card" href="ai-assistant.html">
+          <h3>🤖 AI Assistant</h3>
+          <p>Get instant real-time guidance on atom economy, reactions, safety & waste.</p>
+          <span class="btn" style="background:#fff;color:var(--dark);padding:7px 14px;font-size:13px;margin-top:8px">Ask Assistant →</span>
+        </a>
+
+        <a class="card" href="quiz.html">
+          <h3>📝 Smart Quiz Engine</h3>
+          <p class="muted">Test your knowledge with randomized question sets, instant feedback, and review.</p>
+          <span class="btn secondary" style="padding:7px 14px;font-size:13px;margin-top:8px">Take Quiz →</span>
+        </a>
+      </div>
+
+      <!-- Recent Activity Timeline -->
+      <div class="activity-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <h3 style="margin:0;font-size:17px">📅 Recent Activity</h3>
+          <a href="history.html" style="font-size:13px;color:var(--green);font-weight:bold">View All History →</a>
+        </div>
+        <div id="recentActivityList">
+          <p class="muted">Loading recent activity...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating AI Assistant Launcher -->
+  <a href="ai-assistant.html" class="floating-ai-btn" title="Open AI Assistant">
+    <span>🤖</span>
+    <span>Ask AI Assistant</span>
+  </a>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

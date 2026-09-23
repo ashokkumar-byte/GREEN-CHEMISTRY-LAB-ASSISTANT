@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Learning History - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html">Experiments</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="history.html" style="color:var(--green);font-weight:700">History</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <h1 style="margin:0 0 6px">📜 Complete Learning History</h1>
+        <p class="muted" style="margin:0">Track your virtual practical records, quiz scores, generated lab reports, and AI study sessions.</p>
+      </div>
+      <div>
+        <a class="btn secondary" href="dashboard.html">← Back to Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:6px">
+      <button type="button" class="btn" id="tab-all" onclick="switchTab('all')">🌟 All Activities</button>
+      <button type="button" class="btn secondary" id="tab-practicals" onclick="switchTab('practicals')">🔬 Practicals & Reports</button>
+      <button type="button" class="btn secondary" id="tab-quizzes" onclick="switchTab('quizzes')">📝 Quiz Attempts</button>
+      <button type="button" class="btn secondary" id="tab-ai" onclick="switchTab('ai')">🤖 AI Questions</button>
+    </div>
+
+    <!-- Main History Card -->
+    <div id="historyContent" class="card">
+      <p class="muted">Loading your learning history...</p>
+    </div>
+  </div>
+
+  <!-- Floating AI Assistant Launcher -->
+  <a href="ai-assistant.html" class="floating-ai-btn" title="Ask AI Assistant">
+    <span>🤖</span>
+    <span>Ask AI Assistant</span>
+  </a>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    const navAuthBtn = document.getElementById('navAuthBtn');
+    api('/me').then(me => {
+      if (navAuthBtn) {
+        navAuthBtn.textContent = 'Dashboard';
+        navAuthBtn.href = 'dashboard.html';
+      }
+    }).catch(() => {});
+
+    let historyData = null;
+    let activeTab = 'all';
+
+    async function loadHistory() {
+      const box = document.getElementById('historyContent');
+      try {
+        const res = await api('/history');
+        historyData = res;
+        renderHistory();
+      } catch (err) {
+        box.innerHTML = `
+          <div style="text-align:center;padding:30px">
+            <h3 class="error">Login Required</h3>
+            <p class="muted">Please login to view your personal learning and practical history.</p>
+            <a class="btn" href="login.html" style="margin-top:10px">Login to Account</a>
+          </div>
+        `;
+      }
+    }
+
+    window.switchTab = function(tab) {
+      activeTab = tab;
+      ['all', 'practicals', 'quizzes', 'ai'].forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        if (btn) btn.className = t === tab ? 'btn' : 'btn secondary';
+      });
+      renderHistory();
+    };
+
+    function renderHistory() {
+      const box = document.getElementById('historyContent');
+      if (!historyData) return;
+
+      if (activeTab === 'practicals') {
+        renderPracticals(box);
+      } else if (activeTab === 'quizzes') {
+        renderQuizzes(box);
+      } else if (activeTab === 'ai') {
+        renderAiQuestions(box);
+      } else {
+        renderAll(box);
+      }
+    }
+
+    function renderAll(box) {
+      const items = historyData.items || [];
+      if (items.length === 0) {
+        box.innerHTML = '<p class="muted" style="text-align:center;padding:25px">No activity recorded yet. Start exploring experiments or take a quiz!</p>';
+        return;
+      }
+
+      box.innerHTML = `
+        <h3 style="margin-top:0">🌟 Complete Activity Timeline</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+          ${items.map(item => {
+            let icon = '📌';
+            if (item.type.includes('Practical')) icon = '🔬';
+            else if (item.type.includes('Quiz')) icon = '📝';
+            else if (item.type.includes('Report')) icon = '📑';
+            else if (item.type.includes('AI')) icon = '🤖';
+
+            return `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#f9fcf9;border:1px solid var(--border);border-radius:10px">
+                <div>
+                  <b style="color:var(--dark);font-size:15px">${icon} ${item.type}</b>
+                  <div class="muted" style="font-size:13.5px;margin-top:2px">${item.details || 'Activity logged'}</div>
+                </div>
+                <span class="muted" style="font-size:13px">${item.created_at || ''}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function renderPracticals(box) {
+      const reports = historyData.reports || [];
+      const practicals = historyData.practicals || [];
+
+      if (reports.length === 0 && practicals.length === 0) {
+        box.innerHTML = `
+          <div style="text-align:center;padding:30px">
+            <h3>No Virtual Practicals Completed Yet</h3>
+            <p class="muted">Enter our virtual laboratory, conduct your first experiment simulation, and generate official records.</p>
+            <a class="btn" href="experiments.html" style="margin-top:10px">Explore Experiments</a>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <h3 style="margin-top:0">🔬 Completed Practicals & Official Laboratory Records</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px">
+          ${reports.map(rep => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:18px;border:1px solid var(--border);border-radius:12px;background:#fff;flex-wrap:wrap;gap:12px">
+              <div>
+                <span class="badge teal">Official Record #REP-${rep.id.toString().padStart(4, '0')}</span>
+                <h3 style="margin:8px 0 4px">${rep.title}</h3>
+                <span class="muted" style="font-size:13px">Generated on: ${rep.created_at}</span>
+              </div>
+              <div>
+                <a class="btn" style="padding:9px 18px;font-size:13.5px" href="report.html?id=${rep.id}">
+                  📄 View / Print Record →
+                </a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderQuizzes(box) {
+      const quizzes = historyData.quizzes || [];
+      if (quizzes.length === 0) {
+        box.innerHTML = `
+          <div style="text-align:center;padding:30px">
+            <h3>No Quizzes Taken Yet</h3>
+            <p class="muted">Challenge yourself with randomized questions from our smart quiz pool.</p>
+            <a class="btn" href="quiz.html" style="margin-top:10px">Take a Quiz Now</a>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <h3 style="margin-top:0">📝 Smart Quiz History</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+          ${quizzes.map(q => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border:1px solid var(--border);border-radius:12px;background:#fff;flex-wrap:wrap;gap:10px">
+              <div>
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+                  <span class="badge teal">${q.topic}</span>
+                  <span class="badge ${q.difficulty === 'Easy' ? '' : q.difficulty === 'Hard' ? 'red' : 'amber'}">${q.difficulty}</span>
+                </div>
+                <h4 style="margin:0;font-size:16px">Score: ${q.score} / ${q.total_questions} (${q.percentage}%)</h4>
+                <span class="muted" style="font-size:12.5px">${q.created_at}</span>
+              </div>
+              <div>
+                <span class="badge" style="font-size:14px;padding:6px 14px;background:${q.percentage >= 70 ? '#e6f6ed' : '#fef3c7'}">
+                  ${q.percentage >= 70 ? '✓ Passed' : 'Needs Review'}
+                </span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderAiQuestions(box) {
+      const items = (historyData.items || []).filter(x => x.type.includes('AI'));
+      if (items.length === 0) {
+        box.innerHTML = `
+          <div style="text-align:center;padding:30px">
+            <h3>No AI Study Questions Yet</h3>
+            <p class="muted">Ask our educational assistant about atom economy, reaction mechanisms, and green principles.</p>
+            <a class="btn" href="ai-assistant.html" style="margin-top:10px">Open AI Assistant</a>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <h3 style="margin-top:0">🤖 AI Study Inquiries</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+          ${items.map(ai => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border:1px solid var(--border);border-radius:10px;background:#fdfefe">
+              <div>
+                <b>🤖 AI Assistant Inquiry</b>
+                <div class="muted" style="font-size:13px">${ai.details || 'Question asked'}</div>
+              </div>
+              <span class="muted" style="font-size:12.5px">${ai.created_at}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>

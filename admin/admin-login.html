@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login - Green Chemistry</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <div class="auth-page" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px">
+    <div class="card" style="width:100%;max-width:440px;padding:35px">
+      <div style="text-align:center;margin-bottom:20px">
+        <span style="font-size:36px">🔐</span>
+        <h1 style="margin:10px 0 6px;font-size:24px">Admin Portal Login</h1>
+        <p class="muted" style="margin:0;font-size:14px">Management & Curriculum Administration Area</p>
+      </div>
+
+      <form id="adminLoginForm">
+        <label style="font-weight:700;font-size:13px">Admin Username</label>
+        <input id="adminUsername" class="input" placeholder="admin" required autocomplete="username">
+
+        <label style="font-weight:700;font-size:13px">Password</label>
+        <input id="adminPassword" class="input" type="password" placeholder="••••••••" required autocomplete="current-password">
+
+        <div id="msg" style="margin-bottom:14px"></div>
+
+        <button class="btn" type="submit" style="width:100%;padding:13px;font-size:15px;background:var(--dark)">
+          Log In as Administrator →
+        </button>
+      </form>
+
+      <div style="margin-top:24px;padding:12px;background:#f4fbf7;border:1px solid #dce9e1;border-radius:8px;font-size:12.5px;color:var(--dark)">
+        <b>💡 Default Administrator Account:</b><br>
+        Username: <code>admin</code> • Password: <code>Admin@123</code>
+      </div>
+
+      <div style="text-align:center;margin-top:20px">
+        <a href="/" style="font-size:13px;color:var(--muted)">← Return to Student Website</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    const form = document.getElementById('adminLoginForm');
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('adminUsername').value.trim();
+      const p = document.getElementById('adminPassword').value;
+      const msg = document.getElementById('msg');
+
+      msg.innerHTML = '<span class="muted">Verifying administrator credentials...</span>';
+      try {
+        await api('/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({ username: u, password: p })
+        });
+        location.href = 'admin-dashboard.html';
+      } catch (err) {
+        msg.innerHTML = `<span style="color:var(--danger);font-weight:bold">${err.message || 'Invalid credentials'}</span>`;
+      }
+    };
+  </script>
+</body>
+</html>

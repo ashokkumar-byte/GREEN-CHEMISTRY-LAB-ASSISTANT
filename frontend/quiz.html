@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Smart Quiz - Green Chemistry</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html">🌱 Green Chemistry Lab Assistant</a>
+    <nav class="navlinks">
+      <a href="experiments.html">Experiments</a>
+      <a href="quiz.html" style="color:var(--green);font-weight:700">Quiz</a>
+      <a href="principles.html">Principles</a>
+      <a href="safety.html">Safety</a>
+      <a href="ai-assistant.html">AI Assistant</a>
+      <a class="btn" id="navAuthBtn" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container section">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <h1 style="margin:0 0 6px">📝 Smart Green Chemistry Quiz</h1>
+        <p class="muted" style="margin:0">Test your mastery with randomized question pools, topic filtering, and comprehensive review feedback.</p>
+      </div>
+      <div id="quizToolbar">
+        <a class="btn secondary" href="history.html" style="padding:8px 14px;font-size:13px">📜 Quiz History</a>
+      </div>
+    </div>
+
+    <!-- Main Quiz Card Container -->
+    <div id="quizContainer" class="card">
+      <!-- Loaded dynamically by js/quiz.js: Setup Screen, Active Quiz Screen, or Results Review Screen -->
+      <div style="text-align:center;padding:40px 20px">
+        <p class="muted">Loading smart quiz engine...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">Green Chemistry Lab Assistant • Learn safely • Think sustainably</footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

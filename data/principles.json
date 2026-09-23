@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Prevention",
+    "description": "Prevent waste rather than treating or cleaning it up after it has formed."
+  },
+  {
+    "id": 2,
+    "name": "Atom Economy",
+    "description": "Design syntheses so that most atoms of the starting materials become part of the final product."
+  },
+  {
+    "id": 3,
+    "name": "Less Hazardous Synthesis",
+    "description": "Use and generate substances with little or no toxicity to people and the environment."
+  },
+  {
+    "id": 4,
+    "name": "Designing Safer Chemicals",
+    "description": "Design chemical products to perform their function while reducing harmful effects."
+  },
+  {
+    "id": 5,
+    "name": "Safer Solvents and Auxiliaries",
+    "description": "Avoid solvents and auxiliaries where possible and choose safer ones when necessary."
+  },
+  {
+    "id": 6,
+    "name": "Energy Efficiency",
+    "description": "Minimize energy requirements and prefer ambient temperature and pressure when practical."
+  },
+  {
+    "id": 7,
+    "name": "Renewable Feedstocks",
+    "description": "Prefer renewable raw materials when technically and economically practical."
+  },
+  {
+    "id": 8,
+    "name": "Reduce Derivatives",
+    "description": "Avoid unnecessary protecting groups, temporary modifications and extra steps."
+  },
+  {
+    "id": 9,
+    "name": "Catalysis",
+    "description": "Prefer catalytic reagents over stoichiometric reagents when practical."
+  },
+  {
+    "id": 10,
+    "name": "Design for Degradation",
+    "description": "Design products that break down into harmless substances after use."
+  },
+  {
+    "id": 11,
+    "name": "Real-Time Analysis",
+    "description": "Develop monitoring methods that prevent formation of hazardous substances during processing."
+  },
+  {
+    "id": 12,
+    "name": "Inherently Safer Chemistry",
+    "description": "Choose substances and conditions that reduce accident risks such as fire, explosion and releases."
+  }
+]
