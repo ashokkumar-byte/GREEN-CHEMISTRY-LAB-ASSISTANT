@@ -2,7 +2,7 @@ import sqlite3
 import json
 from pathlib import Path
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import DB_PATH, DATA_DIR
+from config import ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_USERNAME, DB_PATH, DATA_DIR
 
 def connect():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -143,12 +143,12 @@ def init_db():
     except Exception:
         pass
 
-    # Seed default admin user if not exists
-    admin = c.execute("SELECT id FROM users WHERE username='admin'").fetchone()
-    if not admin:
+    # Seed an admin only when credentials are explicitly configured.
+    admin = c.execute("SELECT id FROM users WHERE username=?", (ADMIN_USERNAME,)).fetchone()
+    if not admin and ADMIN_PASSWORD:
         c.execute(
             "INSERT INTO users(name, username, email, password_hash, is_admin) VALUES (?,?,?,?,?)",
-            ("Administrator", "admin", "admin@greenlab.local", generate_password_hash("Admin@123"), 1)
+            ("Administrator", ADMIN_USERNAME, ADMIN_EMAIL, generate_password_hash(ADMIN_PASSWORD), 1)
         )
         c.commit()
 
