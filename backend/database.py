@@ -850,12 +850,11 @@ def get_user_practical_attempts(user_id, limit=50):
 def save_report(user_id, practical_id, experiment_id, title, content_dict):
     c = connect()
     content_str = json.dumps(content_dict)
-    description = content_dict.get('conclusion') or title
     try:
         cur = c.execute("""
-        INSERT INTO reports(user_id, practical_id, experiment_id, title, description, content_json)
-        VALUES (?,?,?,?,?,?)
-        """, (user_id, practical_id, experiment_id, title, description, content_str))
+        INSERT INTO reports(user_id, practical_id, experiment_id, title, content_json)
+        VALUES (?,?,?,?,?)
+        """, (user_id, practical_id, experiment_id, title, content_str))
         rep_id = cur.lastrowid
         c.commit()
     except Exception:
