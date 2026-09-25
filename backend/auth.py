@@ -11,8 +11,11 @@ def register():
  return jsonify(message='registered')
 @bp.post('/login')
 def login():
- d=request.json or {};r=get_user(d.get('username',''))
- if not valid_password(r,d.get('password','')):return jsonify(error='Invalid username or password'),401
+ d=request.get_json(silent=True) or {}
+ username=str(d.get('username') or '').strip()
+ password=d.get('password') or ''
+ r=get_user(username)
+ if not valid_password(r,password):return jsonify(error='Invalid username or password'),401
  session['user_id']=r['id'];return jsonify(message='logged in')
 @bp.post('/logout')
 def logout():session.clear();return jsonify(message='logged out')
