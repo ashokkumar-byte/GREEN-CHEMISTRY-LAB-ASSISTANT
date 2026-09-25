@@ -8,6 +8,9 @@ A Flask + HTML/CSS/JavaScript educational web application for green chemistry le
 3. Run `start.bat`.
 4. Open http://127.0.0.1:5000
 
+The application uses relative `/api` requests, so the same frontend works on
+localhost and when served from the deployed application origin.
+
 ## Configuration
 Copy `.env.example` to `.env` for local configuration. Set `SECRET_KEY` and
 `ADMIN_PASSWORD` through Vercel environment variables for deployment. AI
@@ -23,6 +26,25 @@ The existing Flask application is exposed through `api/index.py` and
 frontend's relative `/api` requests work without a separate CORS configuration.
 
 The backend automatically creates the SQLite database in `database/green_chemistry.db` on first run. The included database file is only a placeholder so the requested structure is present.
+
+## Render deployment
+
+Use this build command:
+
+```text
+pip install -r backend/requirements.txt
+```
+
+Use this start command:
+
+```text
+gunicorn --bind 0.0.0.0:$PORT api.index:app
+```
+
+Set `SECRET_KEY` to a long random value. For persistent SQLite data, attach a
+Render persistent disk and set `DATABASE_PATH` to its mounted path, such as
+`/var/data/green_chemistry.db`. Without a persistent disk, the app still runs
+but SQLite data can be lost when the service is recreated.
 
 ## Main features
 - Student registration and login

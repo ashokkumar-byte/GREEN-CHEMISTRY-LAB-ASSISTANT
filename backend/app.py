@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, send_from_directory, session, request
 from pathlib import Path
-from config import SECRET_KEY, BASE_DIR
+from config import SECRET_KEY, BASE_DIR, PORT
 from database import init_db, connect
 from auth import bp as auth_bp
 from experiments import bp as experiments_bp
@@ -36,7 +36,8 @@ def unsupported_media_type(e):
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return jsonify(error='Internal server error', details=str(e)), 500
+    app.logger.exception('Unhandled server error: %s', e)
+    return jsonify(error='Internal server error. Please try again.'), 500
 
 
 @app.get('/api/stats')
@@ -133,4 +134,4 @@ def static_page(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=PORT, debug=False)

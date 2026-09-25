@@ -17,6 +17,14 @@ def parse_json_safely(val, fallback=None):
     except Exception:
         return fallback
 
+def read_text_field(data, key, fallback):
+    value = data.get(key)
+    if value is None:
+        return fallback
+    if not isinstance(value, str):
+        raise ValueError(f'{key} must be text')
+    return value.strip() or fallback
+
 @bp.get('/practicals/<int:exp_id>')
 def get_practical(exp_id):
     c = connect()
@@ -45,8 +53,12 @@ def submit_practical():
 
     data = request.get_json(force=True, silent=True) or {}
     exp_id = data.get('experiment_id')
-    if not exp_id:
+    if isinstance(exp_id, bool) or not isinstance(exp_id, (int, str)) or not str(exp_id).strip():
         return jsonify(error='Experiment ID is required'), 400
+    try:
+        exp_id = int(exp_id)
+    except (TypeError, ValueError):
+        return jsonify(error='Experiment ID must be a valid number'), 400
 
     c = connect()
     exp_row = c.execute("SELECT * FROM experiments WHERE id=?", (exp_id,)).fetchone()
@@ -59,10 +71,13 @@ def submit_practical():
     if not user:
         return jsonify(error='User profile not found'), 404
 
-    observations = data.get('observations', '').strip() or 'No specific observations recorded.'
-    result = data.get('result', '').strip() or 'Reaction conducted in accordance with green chemistry principles.'
-    conclusion = data.get('conclusion', '').strip() or 'The practical successfully satisfied targeted green chemistry metrics.'
-    waste_info = data.get('waste_info', '').strip() or exp_row['waste_management']
+    try:
+        observations = read_text_field(data, 'observations', 'No specific observations recorded.')
+        result = read_text_field(data, 'result', 'Reaction conducted in accordance with green chemistry principles.')
+        conclusion = read_text_field(data, 'conclusion', 'The practical successfully satisfied targeted green chemistry metrics.')
+        waste_info = read_text_field(data, 'waste_info', exp_row['waste_management'])
+    except ValueError as error:
+        return jsonify(error=str(error)), 400
 
     # Save practical attempt
     prac_id = save_practical_attempt(
