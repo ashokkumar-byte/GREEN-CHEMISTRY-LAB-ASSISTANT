@@ -354,8 +354,8 @@ window.submitPractical = async function() {
       })
     });
 
-    // Successfully saved! Redirect to the generated laboratory report
-    location.href = `report.html?id=${res.report_id}`;
+    // Open the saved record; the report page displays the completion state.
+    location.href = `report.html?id=${res.report_id}&generated=1`;
   } catch (err) {
     workspace.innerHTML = `
       <div style="text-align:center;padding:40px 20px">

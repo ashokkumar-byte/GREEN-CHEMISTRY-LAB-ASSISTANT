@@ -1,5 +1,4 @@
 import os
-import secrets
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -11,7 +10,7 @@ if os.getenv('VERCEL'):
 else:
 	DB_PATH = BASE_DIR / 'database' / 'green_chemistry.db'
 DATA_DIR = BASE_DIR / 'data'
-SECRET_KEY = os.getenv('SECRET_KEY') or secrets.token_hex(32)
+SECRET_KEY = os.getenv('SECRET_KEY') or 'green-chemistry-lab-assistant-development-key'
 AI_API_KEY = os.getenv('AI_API_KEY', '').strip()
 AI_API_URL = os.getenv('AI_API_URL', '').strip()
 AI_MODEL = os.getenv('AI_MODEL', '').strip()

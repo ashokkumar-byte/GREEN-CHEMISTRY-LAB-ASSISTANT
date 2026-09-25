@@ -84,14 +84,14 @@ def submit_quiz():
 
     db_map = {str(r['id']): dict(r) for r in rows}
     score = 0
-    total = len(q_ids)
+    total = len(rows)
     review = []
 
     for qid_str, user_ans in answers.items():
         q_info = db_map.get(str(qid_str))
         if not q_info:
             continue
-        is_correct = (str(user_ans).strip().lower() == str(q_info['correct_answer']).strip().lower())
+        is_correct = user_ans is not None and (str(user_ans).strip().lower() == str(q_info['correct_answer']).strip().lower())
         if is_correct:
             score += 1
         review.append({

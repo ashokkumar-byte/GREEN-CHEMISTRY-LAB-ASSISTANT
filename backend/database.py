@@ -6,7 +6,8 @@ from config import ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_USERNAME, DB_PATH, DATA_DI
 
 def connect():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    c = sqlite3.connect(DB_PATH)
+    c = sqlite3.connect(DB_PATH, timeout=30)
+    c.execute('PRAGMA busy_timeout=30000')
     c.row_factory = sqlite3.Row
     return c
 
@@ -133,6 +134,11 @@ def init_db():
         pass
     try:
         c.execute("ALTER TABLE reports ADD COLUMN experiment_id INTEGER")
+        c.commit()
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE reports ADD COLUMN description TEXT")
         c.commit()
     except Exception:
         pass
@@ -761,13 +767,16 @@ def valid_password(row, password):
 
 # --- Activity Logging ---
 def log_activity(user_id, act_type, details=None):
+    c = None
     try:
         c = connect()
         c.execute('INSERT INTO activity(user_id, type, details) VALUES(?,?,?)', (user_id, act_type, details))
         c.commit()
-        c.close()
     except Exception:
         pass
+    finally:
+        if c:
+            c.close()
 
 # --- Chat persistence ---
 def save_chat_message(user_id, role, content):
@@ -813,13 +822,18 @@ def get_user_quiz_attempts(user_id, limit=50):
 # --- Practicals ---
 def save_practical_attempt(user_id, experiment_id, experiment_name, observations, result, conclusion, waste_info):
     c = connect()
-    cur = c.execute("""
-    INSERT INTO practical_attempts(user_id, experiment_id, experiment_name, observations, result, conclusion, waste_info)
-    VALUES (?,?,?,?,?,?,?)
-    """, (user_id, experiment_id, experiment_name, observations, result, conclusion, waste_info))
-    prac_id = cur.lastrowid
-    c.commit()
-    c.close()
+    try:
+        cur = c.execute("""
+        INSERT INTO practical_attempts(user_id, experiment_id, experiment_name, observations, result, conclusion, waste_info)
+        VALUES (?,?,?,?,?,?,?)
+        """, (user_id, experiment_id, experiment_name, observations, result, conclusion, waste_info))
+        prac_id = cur.lastrowid
+        c.commit()
+    except Exception:
+        c.rollback()
+        raise
+    finally:
+        c.close()
     log_activity(user_id, 'Practical Lab', f"Completed virtual practical for '{experiment_name}'")
     return prac_id
 
@@ -836,13 +850,19 @@ def get_user_practical_attempts(user_id, limit=50):
 def save_report(user_id, practical_id, experiment_id, title, content_dict):
     c = connect()
     content_str = json.dumps(content_dict)
-    cur = c.execute("""
-    INSERT INTO reports(user_id, practical_id, experiment_id, title, content_json)
-    VALUES (?,?,?,?,?)
-    """, (user_id, practical_id, experiment_id, title, content_str))
-    rep_id = cur.lastrowid
-    c.commit()
-    c.close()
+    description = content_dict.get('conclusion') or title
+    try:
+        cur = c.execute("""
+        INSERT INTO reports(user_id, practical_id, experiment_id, title, description, content_json)
+        VALUES (?,?,?,?,?,?)
+        """, (user_id, practical_id, experiment_id, title, description, content_str))
+        rep_id = cur.lastrowid
+        c.commit()
+    except Exception:
+        c.rollback()
+        raise
+    finally:
+        c.close()
     log_activity(user_id, 'Report Generated', f"Generated laboratory record: '{title}'")
     return rep_id
 

@@ -25,8 +25,10 @@ async function loadReport() {
     const res = await api(`/reports/${id}`);
     const rep = res.report;
     const c = rep.content || {};
+    const generatedMessage = '<div class="success" style="text-align:center;padding:12px 16px;margin-bottom:18px;font-weight:700">Report Generated Successfully</div>';
 
     reportBox.innerHTML = `
+      ${generatedMessage}
       <div class="report-sheet">
         <div style="text-align:center;border-bottom:3px double var(--green);padding-bottom:14px;margin-bottom:20px">
           <div style="font-size:13px;letter-spacing:1px;font-weight:700;color:var(--muted)">DEPARTMENT OF CHEMISTRY • SUSTAINABLE LABORATORY PROGRAM</div>

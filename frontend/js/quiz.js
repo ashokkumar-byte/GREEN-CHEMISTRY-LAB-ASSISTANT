@@ -192,7 +192,7 @@ window.submitQuiz = async function() {
       body: JSON.stringify({
         topic: selectedTopic === 'all' ? 'General Green Chemistry' : selectedTopic,
         difficulty: selectedDifficulty === 'all' ? 'Mixed' : selectedDifficulty,
-        answers: userAnswers
+        answers: Object.fromEntries(currentQuestions.map(question => [question.id, userAnswers[question.id] || null]))
       })
     });
 
